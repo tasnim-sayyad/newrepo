@@ -1,0 +1,17 @@
+pipeline {
+    agent {label 'build-agent'}
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'               
+                sh '/var/tools/apache-maven-3.9.8/bin/mvn clean install -DskipTests'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+    }
+}
