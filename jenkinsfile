@@ -4,22 +4,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'        
-                sh 'whoami'       
-                sh '/home/ubuntu/apache-maven-3.9.9/bin/mvn -T 2 clean install -DskipTests'
+                echo 'Building...'               
+                sh '/var/tools/apache-maven-3.9.8/bin/mvn clean install -DskipTests'
             }
         }
-        stage('Create Docker Image') {
+        stage('Test') {
             steps {
-                echo 'Create Docker Image'
-                sh 'sudo docker build -t springboot:${BUILD_NUMBER} .'
+                echo 'Testing..'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh 'sudo docker rm -f springboot-01'
-                sh 'sudo docker run --name springboot-01 -d -p 8082:8080 springboot:${BUILD_NUMBER}'
+                sh 'Java -jar ./target/spring-petclinic-3.3.0-SNAPSHOT.jar &'
             }
         }
     }
